@@ -35,8 +35,7 @@ if not TOKEN:
 
 # Список разрешенных пользователей
 ALLOWED_USERS = {
-    # : "admin_user",
-    #: "family_member",
+
 }
 
 # Состояния для ConversationHandler
@@ -174,6 +173,14 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await stats_menu(update, context)
     elif text == "ℹ️ Помощь":
         return await help_menu(update, context)
+    elif text == "🏠 Главное меню":
+        return await start(update, context)
+    elif text == "🔍 Новый поиск":
+        return await search_preserves_menu(update, context)
+    elif text == "🔙 Назад к закаткам":
+        return await preserves_menu(update, context)
+    elif text == "🔙 Назад к продуктам":
+        return await products_menu(update, context)
     else:
         await update.message.reply_text("❓ Неизвестная команда. Используйте кнопки меню.")
         return MAIN_MENU
@@ -212,6 +219,10 @@ async def preserves_menu_handler(update: Update, context: ContextTypes.DEFAULT_T
         return await add_preserve_menu(update, context)
     elif text == "🏠 Главное меню":
         return await start(update, context)
+    elif text == "🔙 Назад":
+        return await start(update, context)
+    elif text == "🔙 Назад к закаткам":
+        return await preserves_menu(update, context)
     else:
         await update.message.reply_text("❓ Неизвестная команда. Используйте кнопки меню.")
         return PRESERVES_MENU
@@ -247,6 +258,10 @@ async def products_menu_handler(update: Update, context: ContextTypes.DEFAULT_TY
         return await add_product_menu(update, context)
     elif text == "🏠 Главное меню":
         return await start(update, context)
+    elif text == "🔙 Назад":
+        return await start(update, context)
+    elif text == "🔙 Назад к продуктам":
+        return await products_menu(update, context)
     else:
         await update.message.reply_text("❓ Неизвестная команда. Используйте кнопки меню.")
         return PRODUCTS_MENU
@@ -312,6 +327,10 @@ async def search_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
         return await search_preserves_menu(update, context)
     elif text == "🏠 Главное меню":
         return await start(update, context)
+    elif text == "🔙 Назад":
+        return await start(update, context)
+    elif text == "🔍 Новый поиск":
+        return await search_preserves_menu(update, context)
     else:
         await update.message.reply_text("❓ Неизвестная команда. Используйте кнопки меню.")
         return SEARCH_MENU
@@ -342,6 +361,8 @@ async def stats_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE)
         return await show_stats(update, context)
     elif text == "🏠 Главное меню":
         return await start(update, context)
+    elif text == "🔙 Назад":
+        return await stats_menu(update, context)
     else:
         await update.message.reply_text("❓ Неизвестная команда. Используйте кнопки меню.")
         return STATS_MENU
@@ -1357,7 +1378,7 @@ async def search_preserves_step2_handler(update: Update, context: ContextTypes.D
     # Очищаем временные данные
     context.user_data.clear()
 
-    return MAIN_MENU
+    return SEARCH_MENU
 
 
 async def search_preserves_step2_custom_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1384,7 +1405,8 @@ async def search_preserves_step2_custom_handler(update: Update, context: Context
     # Очищаем временные данные
     context.user_data.clear()
 
-    return MAIN_MENU
+    # Возвращаемся в меню поиска, а не в главное меню
+    return SEARCH_MENU  # Вместо MAIN_MENU
 
 
 # ========== УДАЛЕНИЕ ==========
